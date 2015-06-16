@@ -1,6 +1,8 @@
-#include "stdio.h"
-#include "stdlib.h"
+#include <iostream>
+#include "sensors/vision.hpp"
 
-//int main(void) {
-//	return 0;
-//}
+int main(void) {
+	sensors::Camera camera;
+	camera.detectExits();
+	return 0;
+}

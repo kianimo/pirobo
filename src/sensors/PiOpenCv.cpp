@@ -15,9 +15,8 @@
 using namespace std;
 using namespace cv;
 // Test
-int main() {
+int mainx() {
 	try {
-
 		VideoCapture cap(0); // open the default camera
 		cap.set(CV_CAP_PROP_FRAME_WIDTH, 320);
 		cap.set(CV_CAP_PROP_FRAME_HEIGHT, 240);
@@ -45,7 +44,7 @@ int main() {
 		attribute[1] = 90;
 		imwrite(string("Bild.jpg"), bild, attribute);
 		return 0;
-	} catch (string msg) {
+	} catch (string &msg) {
 		cerr << "Ein Fehler ist aufgetreten!" << endl << msg << endl;
 		return -1;
 	}
