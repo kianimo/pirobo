@@ -6,6 +6,19 @@
 //#include <unistd.h>
 
 namespace sensors {
+std::ostream &operator<<(std::ostream &os, const VisibleExits &exits) {
+  return (os << "Exits: "
+		  	 << (exits.left ? "L" : "") << " "
+			 << (exits.front ? "F" : "") << " "
+			 << (exits.right ? "R" : "")
+		  );
+}
+
+VisibleExits VisibleExits::operator|(const VisibleExits &rhs) {
+	VisibleExits result { left||rhs.left, front||rhs.front, right||rhs.right };
+	return result;
+}
+
 
 VisibleExits Camera::detectExits() {
 	using namespace cv;
@@ -27,6 +40,7 @@ VisibleExits Camera::detectExits() {
 	cvCreateTrackbar("hough_line_threshold", "DebugDisplay", &hough_line_threshold, 500,  NULL);//OK tested
 	cvCreateTrackbar("hough_line_min_length", "DebugDisplay", &hough_line_min_length, 100,  NULL);//OK tested
 	cvCreateTrackbar("hough_line_max_gap", "DebugDisplay", &hough_line_max_gap, 100,  NULL);//OK tested
+	VisibleExits result {false, false, false};
 
 	while(true) {
 		Mat grey, canny;
@@ -83,10 +97,71 @@ VisibleExits Camera::detectExits() {
 //		waitKey(0);
 //		std::cout << "next" << std::endl;
 		imshow("DebugDisplay", img_processed);
+		result = result | detectExitsFromVision(circles, lines);
+		std::cout << result << std::endl;
 
 		if(waitKey(30) >= 0) { break; }
 	}
 	return VisibleExits {true, false, false};
+}
+
+VisibleExits Camera::detectExitsFromVision(std::vector<cv::Vec3f> &circles, std::vector<cv::Vec4i> &lines) {
+	if (circles.size() <= 0) { return VisibleExits { false, false, false }; }
+
+	using namespace cv;
+	using namespace std;
+
+	Vec3f circle = circles[0]; //TODO Eigentlich besten Kreis suchen --> mittigster? Radius?
+
+	bool left = false, front = false, right = false;
+
+	double square_side_length = circle[2] * 3.5;
+	Point center(circle[0], circle[1]);
+
+	Point line_start, line_end;
+	for (unsigned int i = 0; i < lines.size(); ++i)
+	{
+		line_start = Point(lines[i][0], lines[i][1]);
+		line_end = Point(lines[i][2], lines[i][3]);
+
+		Point &point_in_square = line_start;
+		Point &point_out_of_square = line_end;
+
+		if (isPointInsideSquare(line_end, center, square_side_length))
+		{
+			Point temp = line_start;
+			point_in_square = line_end;
+			point_out_of_square = temp;
+		}
+		else if (!isPointInsideSquare(line_start, center, square_side_length))
+			continue;
+
+		if ((point_out_of_square.x) < (center.x - square_side_length / 2))
+		{
+			left = true;
+		}
+		else if (point_out_of_square.x > (center.x + square_side_length / 2))
+		{
+			right = true;
+		}
+		else if (point_out_of_square.y < (center.y - square_side_length / 2))
+		{
+			front = true;
+		}
+
+	}
+
+	std::cout << "left: " << left << "\tfront: "<< front << "\tright: " << right << std::endl;
+	return VisibleExits(left, front, right);
+}
+
+bool Camera::isPointInsideSquare(cv::Point &point, cv::Point &square_center, double square_side_length) {
+	if (point.x > (square_center.x - square_side_length / 2)
+			&& point.x<(square_center.x + square_side_length / 2)
+			&& point.y>(square_center.y - square_side_length / 2)
+			&& point.y < (square_center.y + square_side_length / 2))
+		{ return true; }
+	return false;
 }
 
 }
