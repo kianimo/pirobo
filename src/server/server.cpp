@@ -70,7 +70,7 @@ std::string Server::receive_string(){
 
 //////////////////////////////////////
 
-int server_test_main(int argc, char* argv[]){
+int test_main(int argc, char* argv[]){
 	if(argc != 2) {
 		std::cerr << "Syntax: ./server <port>" << std::endl;
 		return EXIT_FAILURE;
@@ -92,7 +92,11 @@ int server_test_main(int argc, char* argv[]){
 			std::string str;
 			try{
 				str = m_server.receive_string();
-				m_server.send_string("got: " + str + "\n");
+				if(str == "n") { m_server.send_string("n:o:s:w"); }
+				else if(str == "o") { m_server.send_string("o:s:w"); }
+				else if(str == "s") { m_server.send_string("n:s:w"); }
+				else if(str == "w") { m_server.send_string("n:o"); }
+				else { m_server.send_string("invalid command");}
 			} catch (std::exception ex){
 				break;
 			}
