@@ -70,7 +70,7 @@ std::string Server::receive_string(){
 
 //////////////////////////////////////
 
-int main(int argc, char* argv[]){
+int server_test_main(int argc, char* argv[]){
 	if(argc != 2) {
 		std::cerr << "Syntax: ./server <port>" << std::endl;
 		return EXIT_FAILURE;

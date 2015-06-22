@@ -7,10 +7,15 @@
 
 #include "DirectionMovement.h"
 #include "MotorMovement.h"
-#include "math.h"
+#include <math.h>
+#include <stdlib.h>
 
 static MotorMovement *motor = new MotorMovement();
 int currentDirection;
+static int const NORTH = 0;
+static int const EAST = 90;
+static int const SOUTH = 180;
+static int const WEST = 270;
 
 DirectionMovement::DirectionMovement() {
 	// TODO Auto-generated constructor stub
@@ -22,7 +27,7 @@ DirectionMovement::~DirectionMovement() {
 	// TODO Auto-generated destructor stub
 }
 
-void move(int cardinalDirection){
+void DirectionMovement::move(int cardinalDirection){
 	int movementAngle = 0;
 	movementAngle = cardinalDirection - currentDirection;
 	if (abs(movementAngle) > 180){
@@ -34,15 +39,15 @@ void move(int cardinalDirection){
 
 }
 
-void getCommand(std::string command){
+void DirectionMovement::getCommand(const std::string &command){
 	if("north" == command){
-		move(NORTH);
+		DirectionMovement::move(NORTH);
 	}else if("east" == command){
-		move(EAST);
+		DirectionMovement::move(EAST);
 	}else if("south" == command){
-		move(SOUTH);
+		DirectionMovement::move(SOUTH);
 	}else if("west" == command){
-		move(WEST);
+		DirectionMovement::move(WEST);
 	};
 };
 

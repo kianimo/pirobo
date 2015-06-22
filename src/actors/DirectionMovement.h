@@ -5,6 +5,7 @@
  *      Author: christian
  */
 
+#include <string>
 #ifndef SRC_DIRECTIONMOVEMENT_H_
 #define SRC_DIRECTIONMOVEMENT_H_
 
@@ -12,13 +13,9 @@ class DirectionMovement {
 public:
 	DirectionMovement();
 	virtual ~DirectionMovement();
-	void getCommand(std::string command);
+	void getCommand(const std::string &command);
 private:
-	static int const NORTH = 0;
-	static int const EAST = 90;
-	static int const SOUTH = 180;
-	static int const WEST = 270;
-
+	void move(int cardinalDirection);
 
 };
 
