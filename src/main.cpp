@@ -4,6 +4,7 @@
 
 int main(void) {
 	sensors::Camera camera;
-	camera.detectExits();
+	sensors::VisibleExits exits = camera.detectExits();
+	std::cout << exits << std::endl;
 	return 0;
 }

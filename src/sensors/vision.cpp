@@ -42,33 +42,14 @@ VisibleExits Camera::detectExits() {
 	cvCreateTrackbar("hough_line_max_gap", "DebugDisplay", &hough_line_max_gap, 100,  NULL);//OK tested
 	VisibleExits result {false, false, false};
 
-	while(true) {
+	for(int i=0; i<3; ++i) {
 		Mat grey, canny;
 		milliseconds start = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
 		captureDevice >> img_original;
 		GaussianBlur(img_original, img_original, Size(3,3), 2, 2 );
 		cvtColor(img_original, img_processed, CV_BGR2GRAY);
-//		threshold(img_processed, img_processed, bin_threshold, 255, CV_THRESH_BINARY_INV);
-//		img_processed.copyTo(grey);
 		img_original.copyTo(canny);
 		Canny(img_original, canny, (double)hough_circ_p1/3+1, (double)hough_circ_p1+1, 3);
-
-//		Mat element = getStructuringElement(MORPH_CROSS, Size(3, 3));
-//		Mat img_eroded, img_tmp;
-//		Mat img_skel(img_processed.rows, img_processed.cols, 0, Scalar(0, 0));
-//		Mat img_processed_copy;
-//		img_processed.copyTo(img_processed_copy);
-//		while(true) {
-//			erode(img_processed_copy, img_eroded, element);
-//			dilate(img_eroded, img_tmp, element);
-//			subtract(img_processed_copy, img_tmp, img_tmp);
-//			bitwise_or(img_skel, img_tmp, img_skel);
-//			img_eroded.copyTo(img_processed_copy);
-//
-//			if(img_processed_copy.size - countNonZero(img_processed_copy) == img_processed_copy.size) {
-//				break;
-//			}
-//		}
 
 		vector<Vec4i> lines;
 		HoughLinesP(canny, lines, 1, CV_PI/180, hough_line_threshold, hough_line_min_length, hough_line_max_gap);
@@ -89,20 +70,16 @@ VisibleExits Camera::detectExits() {
 		cvtColor(canny, canny, CV_GRAY2BGR);
 		addWeighted(img_original, 0.5, img_processed, 0.5, 0.0, img_processed);
 		addWeighted(img_processed, 0.5, canny, 0.5, 0.0, img_processed);
-//		subtract(img_processed, img_skel, img_processed);
 
 		std::cout << ((duration_cast<milliseconds>(system_clock::now().time_since_epoch())) - start).count() << std::endl;
 
-//		std::cout << "Ok" << std::endl;
-//		waitKey(0);
-//		std::cout << "next" << std::endl;
 		imshow("DebugDisplay", img_processed);
 		result = result | detectExitsFromVision(circles, lines);
-		std::cout << result << std::endl;
 
-		if(waitKey(30) >= 0) { break; }
+//		if(waitKey(30) >= 0) { break; }
 	}
-	return VisibleExits {true, false, false};
+	waitKey(0);
+	return result;
 }
 
 VisibleExits Camera::detectExitsFromVision(std::vector<cv::Vec3f> &circles, std::vector<cv::Vec4i> &lines) {
