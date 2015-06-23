@@ -92,10 +92,10 @@ int test_main(int argc, char* argv[]){
 			std::string str;
 			try{
 				str = m_server.receive_string();
-				if(str == "1") { m_server.send_string("1:2:3:4"); }
-				else if(str == "2") { m_server.send_string("2:3:4"); }
-				else if(str == "3") { m_server.send_string("1:3:4"); }
-				else if(str == "4") { m_server.send_string("1:2"); }
+				if(str == "0") { m_server.send_string("0:1:2:3"); }
+				else if(str == "1") { m_server.send_string("0:1:2:3"); }
+				else if(str == "2") { m_server.send_string("0:1:2:3"); }
+				else if(str == "3") { m_server.send_string("0:1:2:3"); }
 				else { m_server.send_string("invalid command");}
 			} catch (std::exception ex){
 				break;
