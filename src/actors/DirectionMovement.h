@@ -9,13 +9,18 @@
 #ifndef SRC_DIRECTIONMOVEMENT_H_
 #define SRC_DIRECTIONMOVEMENT_H_
 
+namespace sensors {
+	class VisibleExits;
+}
+
 class DirectionMovement {
 public:
 	DirectionMovement();
 	virtual ~DirectionMovement();
-	void getCommand(const std::string &command);
+	std::string getCommand(const std::string &command);
 private:
-	void move(int cardinalDirection);
+	std::string move(int cardinalDirection);
+	std::string getCardinalExits(const sensors::VisibleExits &exits);
 
 };
 

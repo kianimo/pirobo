@@ -3,8 +3,9 @@
 #include "actors/DirectionMovement.h"
 
 int main(void) {
-	sensors::Camera camera;
-	sensors::VisibleExits exits = camera.detectExits();
-	std::cout << exits << std::endl;
+	static DirectionMovement mov;
+	std::cout << mov.getCommand("north") << std::endl;
+	std::cout << mov.getCommand("west") << std::endl;
+
 	return 0;
 }
