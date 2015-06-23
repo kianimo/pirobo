@@ -92,10 +92,11 @@ int test_main(int argc, char* argv[]){
 			std::string str;
 			try{
 				str = m_server.receive_string();
-				if(str == "0") { m_server.send_string("0:1:2:3"); }
-				else if(str == "1") { m_server.send_string("0:1:2:3"); }
-				else if(str == "2") { m_server.send_string("0:1:2:3"); }
-				else if(str == "3") { m_server.send_string("0:1:2:3"); }
+				if(str == "look") { m_server.send_string("north:east:south:west"); }
+				else if(str == "north") { m_server.send_string("north:east:south:west"); }
+				else if(str == "east") { m_server.send_string("north:east:south:west"); }
+				else if(str == "south") { m_server.send_string("north:east:south:west"); }
+				else if(str == "west") { m_server.send_string("north:east:south:west"); }
 				else { m_server.send_string("invalid command");}
 			} catch (std::exception ex){
 				break;
