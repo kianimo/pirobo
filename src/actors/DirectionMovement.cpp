@@ -68,16 +68,25 @@ std::string DirectionMovement::getCardinalExits(const sensors::VisibleExits &exi
 }
 
 std::string DirectionMovement::getCommand(const std::string &command){
-	std::string exit_string;
+	std::string result;
 	if("north" == command){
-		exit_string = DirectionMovement::move(NORTH);
-	}else if("east" == command){
-		exit_string = DirectionMovement::move(EAST);
-	}else if("south" == command){
-		exit_string = DirectionMovement::move(SOUTH);
-	}else if("west" == command){
-		exit_string = DirectionMovement::move(WEST);
-	};
-	return exit_string;
+		result = DirectionMovement::move(NORTH);
+	}
+	else if("east" == command){
+		result = DirectionMovement::move(EAST);
+	}
+	else if("south" == command){
+		result = DirectionMovement::move(SOUTH);
+	}
+	else if("west" == command){
+		result = DirectionMovement::move(WEST);
+	}
+	else if("look" == command) {
+		result = "north";
+	}
+	else {
+		result = "invalid command";
+	}
+	return result;
 };
 

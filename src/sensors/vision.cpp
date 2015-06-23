@@ -73,11 +73,11 @@ VisibleExits Camera::detectExits() {
 
 		std::cout << ((duration_cast<milliseconds>(system_clock::now().time_since_epoch())) - start).count() << std::endl;
 
-		imshow("DebugDisplay", img_processed);
 		result = result | detectExitsFromVision(circles, lines);
 
 //		if(waitKey(30) >= 0) { break; }
 	}
+	imshow("DebugDisplay", img_processed);
 	waitKey(0);
 	return result;
 }

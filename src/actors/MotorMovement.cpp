@@ -107,6 +107,7 @@ void MotorMovement::moveBackward(int discance){
 }
 
 void MotorMovement::turn(int angle){
+	angle %= 360;
 	int ldir = 0;
 	int rdir = 0;
 	if(0 > angle){
@@ -117,12 +118,12 @@ void MotorMovement::turn(int angle){
 		ldir = 1;
 		rdir = 1;
 	}
-	int count = abs(angle)*25.3;
+	int count = abs(angle)*25.0;
 	for(int i=0; i<count; ++i) {
 			left_step(ldir);
 			right_step(rdir);
-			delayMicroseconds(2000);
-		}
+			delayMicroseconds(3000);
+	}
 	resetGPIO();
 }
 
