@@ -10,7 +10,7 @@ int main(int argc, char* argv[]) {
 	if(argc >= 2) {
 		port = atoi(argv[1]);
 		if((port > 65535) || (port < 2000)) {
-			std::cerr << "Port number must be between 2000 - 65535." << std::endl;
+			std::cerr << "Please enter a port number between 2000 - 65535." << std::endl;
 			return EXIT_FAILURE;
 		}
 	}
@@ -30,7 +30,7 @@ int main(int argc, char* argv[]) {
 				answer = mov.getCommand(command);
 				std::cout << answer << std::endl;
 				m_server.send_string(answer);
-			} catch (std::exception ex){
+			} catch (std::exception &ex){
 				break;
 			}
 		}

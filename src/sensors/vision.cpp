@@ -3,7 +3,6 @@
 #include <opencv/highgui.h>
 #include <vector>
 #include <chrono>
-//#include <unistd.h>
 
 namespace sensors {
 std::ostream &operator<<(std::ostream &os, const VisibleExits &exits) {
@@ -28,22 +27,21 @@ VisibleExits Camera::detectExits() {
 	captureDevice.set(CV_CAP_PROP_FRAME_HEIGHT, 240);
 	if(!captureDevice.isOpened()) throw string("Kamera nicht gefunden!");
 	namedWindow("DebugDisplay", 1);
-	int bin_threshold=50;
 	int hough_circ_p1=245;
 	int hough_circ_p2=27;
 	int hough_line_threshold = 80;
 	int hough_line_min_length = 30;
 	int hough_line_max_gap = 20;
-	cvCreateTrackbar("bin_threshold", "DebugDisplay", &bin_threshold, 255,  NULL);//OK tested
-	cvCreateTrackbar("hough_circ_p1", "DebugDisplay", &hough_circ_p1, 1000,  NULL);//OK tested
-	cvCreateTrackbar("hough_circ_p2", "DebugDisplay", &hough_circ_p2, 200,  NULL);//OK tested
-	cvCreateTrackbar("hough_line_threshold", "DebugDisplay", &hough_line_threshold, 500,  NULL);//OK tested
-	cvCreateTrackbar("hough_line_min_length", "DebugDisplay", &hough_line_min_length, 100,  NULL);//OK tested
-	cvCreateTrackbar("hough_line_max_gap", "DebugDisplay", &hough_line_max_gap, 100,  NULL);//OK tested
+//	cvCreateTrackbar("bin_threshold", "DebugDisplay", &bin_threshold, 255,  NULL);//OK tested
+//	cvCreateTrackbar("hough_circ_p1", "DebugDisplay", &hough_circ_p1, 1000,  NULL);//OK tested
+//	cvCreateTrackbar("hough_circ_p2", "DebugDisplay", &hough_circ_p2, 200,  NULL);//OK tested
+//	cvCreateTrackbar("hough_line_threshold", "DebugDisplay", &hough_line_threshold, 500,  NULL);//OK tested
+//	cvCreateTrackbar("hough_line_min_length", "DebugDisplay", &hough_line_min_length, 100,  NULL);//OK tested
+//	cvCreateTrackbar("hough_line_max_gap", "DebugDisplay", &hough_line_max_gap, 100,  NULL);//OK tested
 	VisibleExits result {false, false, false};
 
 	for(int i=0; i<3; ++i) {
-		Mat grey, canny;
+		Mat canny;
 		milliseconds start = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
 		captureDevice >> img_original;
 		GaussianBlur(img_original, img_original, Size(3,3), 2, 2 );
